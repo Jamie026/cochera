@@ -10,10 +10,10 @@ const connection = mysql.createPool({
 
 (async () => {
     try {
-        const [rows] = await connection.query("SELECT 1");
-        console.log("✅ Conexión a la base de datos exitosa");
+        await connection.query("SELECT 1");
+        console.log("Conexión a la base de datos exitosa");
     } catch (error) {
-        console.error("❌ Error al conectar con la base de datos:", error.message);
+        console.error("Error al conectar con la base de datos:", error.message);
     }
 })();
 
