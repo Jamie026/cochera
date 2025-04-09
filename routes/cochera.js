@@ -33,7 +33,7 @@ cocheras.get("/:id", async (req, res) => {
 });
 
 
-cocheras.post("/register", async (req, res) => {
+cocheras.post("/", async (req, res) => {
     const { nombre, distrito, espacio_m2, disponible } = req.body;
     try {
         const [existing, fields] = await connection.query(
@@ -49,6 +49,36 @@ cocheras.post("/register", async (req, res) => {
         res.status(201).json({ message: "Cochera registrada correctamente" });
     } catch (error) {
         console.error("Error al registrar cochera:", error);
+        res.status(500).json({ message: "Error en el servidor" });
+    }
+});
+
+cocheras.put("/:id", async (req, res) => {
+    const { id } = req.params;
+    const { nombre, distrito, espacio_m2, disponible } = req.body;
+    try {
+        const [result] = await connection.query(
+            "UPDATE cochera SET nombre = ?, distrito = ?, espacio_m2 = ?, disponible = ? WHERE id = ?",
+            [nombre, distrito, espacio_m2, disponible, id]
+        );
+        if (result.affectedRows === 0) 
+            return res.status(404).json({ message: "Cochera no encontrada" });
+        res.status(200).json({ message: "Cochera actualizada correctamente" });
+    } catch (error) {
+        console.error("Error al actualizar cochera:", error);
+        res.status(500).json({ message: "Error en el servidor" });
+    }
+});
+
+cocheras.delete("/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [result] = await connection.query("DELETE FROM cochera WHERE id = ?", [id]);
+        if (result.affectedRows === 0) 
+            return res.status(404).json({ message: "Cochera no encontrada" });
+        res.status(200).json({ message: "Cochera eliminada correctamente" });
+    } catch (error) {
+        console.error("Error al eliminar cochera:", error);
         res.status(500).json({ message: "Error en el servidor" });
     }
 });
