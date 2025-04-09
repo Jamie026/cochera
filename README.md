@@ -9,5 +9,4 @@ Después, se debe ejecutar el archivo database.sql, que contiene la estructura d
 Una vez configurada la base de datos, se deben instalar las dependencias del proyecto y finalmente iniciar el servidor.
 
 npm install
-
 npm start
